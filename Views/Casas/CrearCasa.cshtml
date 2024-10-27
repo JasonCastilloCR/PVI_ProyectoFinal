@@ -1,0 +1,69 @@
+﻿@model JCO_ProyectoFinal.Models.ModelCasa
+@{
+    ViewBag.Title = "Crear Casa";
+}
+
+<h2>Crear o Editar Casa</h2>
+
+<form method="post" id="myForm">
+    @Html.HiddenFor(_ => _.Id)
+
+    <div>
+        <label class="form-label" for="NombreCasa">Nombre de la Casa:</label>
+        @Html.TextBoxFor(_ => _.NombreCasa, new { placeholder = "Nombre de la casa", @class = "form-control" })
+    </div>
+
+    <div>
+        <label class="form-label" for="MetrosCuadrados">Metros Cuadrados:</label>
+        @Html.TextBoxFor(_ => _.MetrosCuadrados, new { placeholder = "Área en metros cuadrados", @type = "number", min = "1", @class = "form-control" })
+    </div>
+
+    <div>
+        <label class="form-label" for="NumeroHabitaciones">Número de Habitaciones:</label>
+        @Html.TextBoxFor(_ => _.NumeroHabitaciones, new { placeholder = "Número de habitaciones", @type = "number", min = "1", @class = "form-control" })
+    </div>
+
+    <div>
+        <label class="form-label" for="NumeroBanos">Número de Baños:</label>
+        @Html.TextBoxFor(_ => _.NumeroBanos, new { placeholder = "Número de baños", @type = "number", min = "1", @class = "form-control" })
+    </div>
+
+    <div>
+        <label class="form-label" for="IdPersona">Propietario:</label>
+        @*@Html.DropDownListFor(_ => _.IdPersona, new SelectList(ViewBag.Personas, "IdPersona", "Nombre"), "Seleccionar propietario", new { @class = "form-control" })*@
+    </div>
+
+    <div>
+        <label class="form-label" for="FechaConstruccion">Fecha de Construcción:</label>
+        @Html.TextBoxFor(_ => _.FechaConstruccion, new { @type = "date", @class = "form-control" })
+    </div>
+
+    @if (this.Model != null && this.Model.Id != 0)
+    {
+        <div class="mb-3">
+            @Html.CheckBoxFor(_ => _.Estado, new { @class = "form-check-input" })
+            <label for="Estado" class="form-check-label">Activo</label>
+        </div>
+    }
+
+    <input type="submit" class="btn btn-primary" value="Guardar" />
+</form>
+
+@ViewBag.Resultado
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/validacionesGenericas.js"></script>
+    <script type="text/javascript">
+        $('#myForm').validate({
+            rules: {
+                'NombreCasa': { required: true },
+                'MetrosCuadrados': { required: true, number: true, min: 1 },
+                'NumeroHabitaciones': { required: true, number: true, min: 1 },
+                'NumeroBanos': { required: true, number: true, min: 1 },
+                'IdPersona': { required: true, number: true, min: 1 },
+                'FechaConstruccion': { required: true, date: true }
+            }
+        });
+    </script>
+}

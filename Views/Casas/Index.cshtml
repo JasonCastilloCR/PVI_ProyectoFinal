@@ -1,0 +1,79 @@
+﻿<!--@model List<DataModels.Casa>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Gestionar Casas</h2>
+
+<table id="table-general" class="table table-bordered table-hover">
+    <tr>
+        <th>id</th>
+        <th>nombre</th>
+        <th>metros cuadrados</th>
+        <th>Habitaciones</th>
+        <th>Baños</th>
+        <th>precio</th>
+        <th>id persona</th>
+        <th>fecha construccion</th>
+        <th>estado</th>
+    </tr>
+
+                <!--@*<a href="/Administracion/Guardar/@estudiante.Id" class="btn btn-primary">Modificar</a>*@
+                @*@Html.ActionLink("Modificar", "Guardar", "Administracion", new { id = Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Eliminar", "Eliminar", "Administracion", new { id = estudiante.Id }, new { @class = "btn btn-danger" })*@-->
+<!--</td>-->
+<!--</tr>
+        }
+    }
+</table>-->
+
+@*@model List<JCO_ProyectoFinal.Models.ModelCasa>
+@{
+    ViewBag.Title = "Index";
+}*@
+
+<h2>Administración de Casas</h2>
+
+@Html.ActionLink("Crear Casa", "CrearCasa", "Casas", null, new { @class = "btn btn-success" })
+
+<table id="table-general" class="table table-bordered table-hover">
+    <tr>
+        <th>Id</th>
+        <th>Nombre de la Casa</th>
+        <th>Metros Cuadrados</th>
+        <th>Número de Habitaciones</th>
+        <th>Número de Baños</th>
+        <th>Propietario</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    @{
+        foreach (var casa in this.Model)
+        {
+            <tr>
+                <td>@casa.IdCasa</td>
+                <td>@casa.NombreCasa</td>
+                <td>@casa.MetrosCuadrados</td>
+                <td>@casa.NumeroHabitaciones</td>
+                <td>@casa.NumeroBanos</td>
+                <td>@casa.IdPersona</td> @* Aquí puedes cambiar para mostrar el nombre del propietario si tienes esa información *@
+                <td>@(casa.Estado ? "Activo" : "Inactivo")</td>
+                <td>
+                    @Html.ActionLink("Modificar", "CrearCasa", "Casas", new { id = casa.IdCasa }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Eliminar", "EliminarCasa", "Casas", new { id = casa.IdCasa }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que quieres eliminar esta casa?');" })
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var table = $("#table-general");
+            console.log("Ejecución de scripts de la tabla de casas");
+            // Aquí puedes agregar cualquier funcionalidad adicional para tu tabla
+        });
+    </script>
+}
