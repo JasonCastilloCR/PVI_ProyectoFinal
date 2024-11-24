@@ -167,6 +167,27 @@ namespace DataModels
 
 	public static partial class PviProyectoFinalDBStoredProcedures
 	{
+		#region RetornaPersonas
+
+		public static IEnumerable<RetornaPersonasResult> RetornaPersonas(this PviProyectoFinalDB dataConnection)
+		{
+			return dataConnection.QueryProc<RetornaPersonasResult>("[dbo].[RetornaPersonas]");
+		}
+
+		public partial class RetornaPersonasResult
+		{
+			[Column("id_persona")      ] public int       Id_persona       { get; set; }
+			[Column("nombre_completo") ] public string    Nombre_completo  { get; set; }
+			[Column("email")           ] public string    Email            { get; set; }
+			[Column("telefono")        ] public string    Telefono         { get; set; }
+			[Column("direccion")       ] public string    Direccion        { get; set; }
+			[Column("fecha_nacimiento")] public DateTime? Fecha_nacimiento { get; set; }
+			[Column("estado")          ] public bool?     Estado           { get; set; }
+			[Column("tipo_persona")    ] public string    Tipo_persona     { get; set; }
+		}
+
+		#endregion
+
 		#region SpCrearCasas
 
 		public static int SpCrearCasas(this PviProyectoFinalDB dataConnection, string @nombreCasa, int? @metrosCuadrados, int? @numeroHabitaciones, int? @numeroBanos, int? @idPersona, DateTime? @fechaConstruccion, bool? @estado)
@@ -224,9 +245,20 @@ namespace DataModels
 
 		#region SpGestionarCobros
 
-		public static IEnumerable<Cobro> SpGestionarCobros(this PviProyectoFinalDB dataConnection)
+		public static IEnumerable<SpGestionarCobrosResult> SpGestionarCobros(this PviProyectoFinalDB dataConnection)
 		{
-			return dataConnection.QueryProc<Cobro>("[dbo].[spGestionarCobros]");
+			return dataConnection.QueryProc<SpGestionarCobrosResult>("[dbo].[spGestionarCobros]");
+		}
+
+		public partial class SpGestionarCobrosResult
+		{
+			[Column("id_cobro")    ] public int       Id_cobro    { get; set; }
+			                         public string    Cliente     { get; set; }
+			                         public string    Casa        { get; set; }
+			                         public string    Periodo     { get; set; }
+			                         public string    Estado      { get; set; }
+			                         public decimal   Monto       { get; set; }
+			[Column("Fecha Pagada")] public DateTime? FechaPagada { get; set; }
 		}
 
 		#endregion
@@ -275,6 +307,35 @@ namespace DataModels
 			};
 
 			return dataConnection.ExecuteProc("[dbo].[spModCobro]", parameters);
+		}
+
+		#endregion
+
+		#region SpValidarUsuario
+
+		public static IEnumerable<SpValidarUsuarioResult> SpValidarUsuario(this PviProyectoFinalDB dataConnection, string @email, string @contrasena)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@email",      @email,      LinqToDB.DataType.VarChar)
+				{
+					Size = 150
+				},
+				new DataParameter("@contrasena", @contrasena, LinqToDB.DataType.VarChar)
+				{
+					Size = 15
+				}
+			};
+
+			return dataConnection.QueryProc<SpValidarUsuarioResult>("[dbo].[spValidarUsuario]", parameters);
+		}
+
+		public partial class SpValidarUsuarioResult
+		{
+			[Column("id_persona")  ] public int    Id_persona   { get; set; }
+			[Column("tipo_persona")] public string Tipo_persona { get; set; }
+			[Column("estado")      ] public bool?  Estado       { get; set; }
+			[Column("nombre")      ] public string Nombre       { get; set; }
 		}
 
 		#endregion

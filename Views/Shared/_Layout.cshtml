@@ -3,32 +3,49 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>Sistema de Condominios</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-light nav-opciones">
+
+        @*@Html.ActionLink("Condominios", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+        <a href="@Url.Action("Index", "Casas")" class="navbar-brand">
+            <img class="logo" src="~/img/Logo.png" alt="Condominios" style="height: 40px;" />
+        </a>
+       
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                <ul class="navbar-nav flex-grow-1 lista">
+                    <li><a href="@Url.Action("Index", "Cobros", new { area = "" })" class="paginas">Gestionar Cobros</a></li>
+
+                    @if (ViewBag.TipoPersona == "Empleado")
+                    {
+                        <li><a href="@Url.Action("Index", "Casas", new { area = "" })" class="paginas">Gestionar Casas</a></li>
+                    }
+
+                    <li><a href="@Url.Action("Contact", "Home", new { area = "" })" class="paginas">Gestionar Servicios</a></li>
+
+                    <li>
+                        <p class="usuario"><span class="bienvenida">Bienvenido/a, </span>@Session["UsuarioNombre"]</p>
+                    </li>
+
+                    <li><a href="@Url.Action("Logout", "Login", new { area = "" })" class="paginas"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+
                 </ul>
             </div>
-        </div>
+        
     </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Condominios</p>
         </footer>
     </div>
 
@@ -37,3 +54,76 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<style>
+
+   
+
+    .nav-opciones {
+        border: 1px solid black;
+
+    }
+
+
+
+    img {
+        padding-left: 20px; /* Ajusta el padding a la izquierda */
+        margin: 0 auto;
+        display: block; /* Para asegurarte de que se trata como un bloque */
+        margin-left: 0; /* Para quitar márgenes */
+        height: 40px; /* Ajusta según necesites */
+    }
+
+    nav ul {
+        display: flex; /* Esto alinea los elementos en una fila horizontal */
+        justify-content:space-evenly; /* Esto pone espaciado entre los elementos */
+        padding: 0; /* Elimina el padding del <ul> */
+        margin: 0; /* Elimina el margen del <ul> */
+        list-style-type: none; /* Elimina los puntos de la lista */
+    }
+
+    nav li {
+        margin-right: 20px; /* Espaciado entre los elementos de la lista */
+    }
+
+    nav .paginas {
+        text-decoration: none; /* Quitar el subrayado de los enlaces */
+    }
+
+
+    .paginas{
+        justify-content:space-between;
+        color: black;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .usuario {
+        font-size: 20px;
+        font-weight: 600;
+        color: mediumpurple;
+    }
+
+    .bienvenida {
+        font-size: 20px;
+        font-weight: 600;
+        color: navy;
+    }
+
+    .paginas:hover {
+        background-color: grey;
+        cursor:pointer;
+        color: #fff;
+    }
+
+    .usuario:hover {
+        cursor: pointer;
+        color: navy;
+    }
+
+    .bienvenida:hover {
+        cursor: pointer;
+        color: mediumpurple;
+    }
+</style>

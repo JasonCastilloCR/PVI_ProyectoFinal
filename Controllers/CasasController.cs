@@ -2,6 +2,7 @@
 using JCO_ProyectoFinal.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,21 +13,53 @@ namespace JCO_ProyectoFinal.Controllers
     public class CasasController : Controller
     {
 
+
+       
         // GET: Casas
         public ActionResult Index()
         {
+
+            // Verifica que el usuario esté logueado
+            var usuarioLogeadoId = Session["UsuarioLogeado"] as int?;
+            if (!usuarioLogeadoId.HasValue)
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
+            // Obtener el tipoPersona de la sesión
+            var tipoPersona = Session["TipoPersona"] as string;
+
+            // Asegúrate de que tipoPersona no sea nulo
+            if (string.IsNullOrEmpty(tipoPersona))
+            {
+                // Si tipoPersona no está en la sesión, redirige al login o maneja el error
+                return RedirectToAction("Login", "Login");
+            }
+
+            Debug.WriteLine($"Tipo Persona: {tipoPersona}"); // Esto muestra el valor exacto de tipoPersona
+
+            // Asignar tipoPersona a ViewBag para que esté disponible en la vista
+            ViewBag.TipoPersona = tipoPersona;
+
+            // Obtener la lista de casas desde el procedimiento almacenado
             var casas = new List<Casa>();
             using (var db = new PviProyectoFinalDB("MyDatabase"))
             {
-                // se obtiene la lista de casas recorriendo el sp
                 casas = db.SpGestionarCasas().ToList();
             }
+
             return View(casas);
         }
 
         // GET: CrearCasa
         public ActionResult CrearCasa(int? id)
         {
+            var usuarioLogeadoId = Session["UsuarioLogeado"] as int?;
+            if (!usuarioLogeadoId.HasValue)
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
             var casa = new ModelCasa();
             using (var db = new PviProyectoFinalDB("MyDatabase"))
             {
@@ -49,7 +82,7 @@ namespace JCO_ProyectoFinal.Controllers
                 }
 
                 
-                //ViewBag.Personas = db.RetornaPersonas().ToList(); pendiente el sp para el dropdown
+                ViewBag.Personas = db.RetornaPersonas().ToList(); 
             }
             return View(casa);
         }
@@ -73,7 +106,7 @@ namespace JCO_ProyectoFinal.Controllers
                     }
 
                     
-                    //ViewBag.Personas = db.RetornaPersonas().ToList();
+                    ViewBag.Personas = db.RetornaPersonas().ToList();
                     resultado = "La casa se ha guardado exitosamente.";
                 }
             }

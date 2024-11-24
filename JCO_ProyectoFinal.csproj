@@ -257,11 +257,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CasasController.cs" />
+    <Compile Include="Controllers\CobrosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ModelCasa.cs" />
+    <Compile Include="Models\ModelCobros.cs" />
+    <Compile Include="Models\ModelLogin.cs" />
+    <Compile Include="Models\ModelSesion.cs" />
     <Compile Include="Models\PVI_ProyectoFinal1.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -289,6 +294,10 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\condoImg.png" />
+    <Content Include="img\condoImg2.png" />
+    <Content Include="img\condoImg3.png" />
+    <Content Include="img\Logo.png" />
     <Content Include="LinqToDB.Templates\CopyMe.SqlServer.tt.txt" />
     <Content Include="Models\PVI_ProyectoFinal.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -344,6 +353,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Casas\Index.cshtml" />
     <Content Include="Views\Casas\CrearCasa.cshtml" />
+    <Content Include="Views\Cobros\Index.cshtml" />
+    <Content Include="Views\Cobros\CrearCobro.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

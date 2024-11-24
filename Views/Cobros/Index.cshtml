@@ -1,0 +1,77 @@
+﻿@model List<DataModels.PviProyectoFinalDBStoredProcedures.SpGestionarCobrosResult>
+@{
+    ViewBag.Title = "Gestionar Cobros";
+}
+
+<h2>Gestionar Cobros</h2>
+
+<!-- Filtros -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <label for="cliente">Seleccione un cliente</label>
+        <select id="cliente" class="form-control">
+            <option value="">Seleccione un cliente</option>
+            @*@foreach (var cliente in ViewBag.Clientes as List<DataModels.Persona>)
+        {*@
+            <option value="">Seleccione un cliente</option>
+            @*@cliente.IdPersona
+        @cliente.Nombre*@
+            @*}*@
+        </select>
+    </div>
+    <div class="col-md-4">
+
+        <label for="anio">Seleccione un año</label>
+        <select id="anio" class="form-control">
+            <option value="">Seleccione un año</option>
+            @*@foreach (var anio in ViewBag.Anios as List<int>)
+        {*@
+            <option value="">Seleccione un año</option>
+            @*@anio @anio}*@
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="mes">Seleccione un mes</label>
+        <select id="mes" class="form-control">
+            <option value="">Seleccione un mes</option>
+            @*@foreach (var mes in ViewBag.Meses as List<string>)
+        {*@
+            <option value="">Seleccione un mes</option>
+            @*@mes @mes}*@
+        </select>
+    </div>
+</div>
+
+<!-- Botón Nuevo Cobro -->
+<div class="mb-4">
+    <a href="@Url.Action("Crear", "Cobros")" class="btn btn-primary">Nuevo Cobro</a>
+</div>
+
+<!-- Tabla -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th># Cobro</th>
+            <th># Casa</th>
+            <th># Propietario</th>
+            <th>Periodo</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cobro in Model)
+        {
+            <tr>
+                <td class="text-center">@cobro.Id_cobro</td>
+                <td class="text-center">@cobro.Casa</td>
+                <td>@cobro.Cliente</td>
+                <td>@cobro.Periodo</td>
+                <td class="text-center">@cobro.Estado</td>
+                <td class="text-center">
+                    <a href="@Url.Action("Consultar", "Cobros", new { id = cobro.Id_cobro })" class="text-primary">Consultar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

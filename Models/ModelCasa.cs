@@ -9,11 +9,7 @@ namespace JCO_ProyectoFinal.Models
     public class ModelCasa : Casa
     {
 
-        //public bool _Estado
-        //{
-        //    get => Estado.HasValue && Estado.Value;
-        //    set => Estado = value;
-        //}
+       
         public int Id { get; set; }
         public string NombreCasa { get; set; }
         public int MetrosCuadrados { get; set; }
@@ -21,7 +17,7 @@ namespace JCO_ProyectoFinal.Models
         public int NumeroBanos { get; set; }
         public int IdPersona { get; set; }
         public DateTime FechaConstruccion { get; set; }
-        public bool Estado { get; set; }  // true = Activo, false = Inactivo
+        public bool Estado { get; set; }  
 
     }
 }

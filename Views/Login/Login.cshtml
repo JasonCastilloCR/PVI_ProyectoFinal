@@ -1,0 +1,117 @@
+﻿@model List<DataModels.PviProyectoFinalDBStoredProcedures.SpValidarUsuarioResult>
+@{
+    ViewBag.Title = "Login";
+}
+
+@{
+    Layout = null;
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+<div class="login-container">
+    <h2 class="login-title">Login</h2>
+    <form method="post" @*action="@Url.Action("Login", "Login")"*@>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required />
+
+        <label for="clave">Clave:</label>
+        <input type="password" id="clave" name="clave" required />
+
+        <button type="submit"><i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesion</button>
+    </form>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+    {
+        <p class="mensaje">@ViewBag.Mensaje</p>
+    }
+</div>
+
+<style>
+
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        color: #ffffff;
+        position: relative; 
+    }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/img/condoImg3.png'); 
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5; 
+            z-index: -1; 
+        }
+
+    .login-container {
+        width: 300px;
+        background: #E6DADA; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #274046, #E6DADA); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #274046, #E6DADA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+
+    .login-title {
+        font-size: 24px;
+        color: #ffffff;
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #ffffff;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #FFD700;
+        border-radius: 4px;
+        background-color: #fff;
+        color: black;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background: #00416A; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #E4E5E6, #00416A); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #E4E5E6, #00416A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        color: #FFD700;
+        border: 1px solid #FFD700;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        button[type="submit"]:hover {
+            opacity: 0.7;
+            border: 1px solid #fff;
+            color: #fff;
+        }
+
+    .mensaje {
+        color: #ffdddd;
+        margin-top: 10px;
+    }
+
+</style>

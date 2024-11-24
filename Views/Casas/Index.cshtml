@@ -26,54 +26,181 @@
         }
     }
 </table>-->
-
 @*@model List<JCO_ProyectoFinal.Models.ModelCasa>
-@{
-    ViewBag.Title = "Index";
-}*@
-
-<h2>Administración de Casas</h2>
-
-@Html.ActionLink("Crear Casa", "CrearCasa", "Casas", null, new { @class = "btn btn-success" })
-
-<table id="table-general" class="table table-bordered table-hover">
-    <tr>
-        <th>Id</th>
-        <th>Nombre de la Casa</th>
-        <th>Metros Cuadrados</th>
-        <th>Número de Habitaciones</th>
-        <th>Número de Baños</th>
-        <th>Propietario</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-    </tr>
     @{
-        foreach (var casa in this.Model)
-        {
+        ViewBag.Title = "Index";
+    }*@
+@if (ViewBag.TipoPersona == "Empleado") { 
+    <div class="casasContainer">
+        <h2 class="ttlGestionCasas">Administración de Casas</h2>
+
+        @Html.ActionLink("Crear Casa", "CrearCasa", "Casas", null, new { @class = "btn btn-success" })
+
+        <table id="table-general" class="table table-bordered table-hover tablaCasas">
             <tr>
-                <td>@casa.IdCasa</td>
-                <td>@casa.NombreCasa</td>
-                <td>@casa.MetrosCuadrados</td>
-                <td>@casa.NumeroHabitaciones</td>
-                <td>@casa.NumeroBanos</td>
-                <td>@casa.IdPersona</td> @* Aquí puedes cambiar para mostrar el nombre del propietario si tienes esa información *@
-                <td>@(casa.Estado ? "Activo" : "Inactivo")</td>
-                <td>
-                    @Html.ActionLink("Modificar", "CrearCasa", "Casas", new { id = casa.IdCasa }, new { @class = "btn btn-primary" })
-                    @Html.ActionLink("Eliminar", "EliminarCasa", "Casas", new { id = casa.IdCasa }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que quieres eliminar esta casa?');" })
-                </td>
+                <th>Id</th>
+                <th>Nombre de la Casa</th>
+                <th>Metros Cuadrados</th>
+                <th>Número de Habitaciones</th>
+                <th>Número de Baños</th>
+                <th>Fecha Construccion</th>
+                <th>Propietario</th>
+                <th>Estado</th>
+
+                <th>Acciones</th>
+
             </tr>
-        }
+            @{
+                foreach (var casa in this.Model)
+                {
+                    <tr>
+                        <td>@casa.IdCasa</td>
+                        <td>@casa.NombreCasa</td>
+                        <td>@casa.MetrosCuadrados</td>
+                        <td>@casa.NumeroHabitaciones</td>
+                        <td>@casa.NumeroBanos</td>
+                        <td>@casa.FechaConstruccion</td>
+                        <td>@casa.IdPersona</td> 
+                        <td>@(casa.Estado ? "Activo" : "Inactivo")</td>
+
+                        <td>
+                            @Html.ActionLink("Modificar", "CrearCasa", "Casas", new { id = casa.IdCasa }, new { @class = "btn btn-primary" })
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
     }
-</table>
 
 @section Scripts
 {
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             var table = $("#table-general");
             console.log("Ejecución de scripts de la tabla de casas");
-            // Aquí puedes agregar cualquier funcionalidad adicional para tu tabla
         });
     </script>
 }
+
+
+<style>
+
+    .casasContainer {
+        position: relative; 
+        padding: 20px; 
+        border-radius: 8px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        margin: 20px 0; 
+        overflow: hidden;
+    }
+
+        .casasContainer::before {
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: 0;
+            width: 100%;
+            height: 100%; 
+            background-image: url('/img/condoImg.png'); 
+            background-size: cover; 
+            background-position: center; 
+            opacity: 0.5; 
+            z-index: -1;
+            animation: kenburns-top 5s ease-out both
+        }
+
+
+    .ttlGestionCasas {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        font-size: 2.5rem; 
+        font-weight: 600;
+        color: #333; 
+        text-align: center; 
+        text-transform: uppercase; 
+        letter-spacing: 2px; 
+        margin: 40px 0; 
+        padding: 0 15px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+
+
+
+    .tablaCasas {
+        table-layout: fixed;
+        width: 100%; 
+        border-collapse: collapse; 
+        margin: 20px 0; 
+        background-color: rgba(255, 255, 255, 0.3); 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        border-radius: 8px; 
+        overflow: hidden; 
+    }
+
+        
+        .tablaCasas th {
+            background-color: rgba(52, 58, 64, 0.7); 
+            color: white; 
+            text-align: left; 
+            padding: 12px 15px; 
+            font-size: 1.1em; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+       
+        .tablaCasas td {
+            padding: 10px 15px; 
+            text-align: left; 
+            font-size: 1em; 
+            color: #333; 
+            background-color: rgba(255, 255, 255, 0.5); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+
+        
+        .tablaCasas tr:hover {
+            background-color: rgba(0, 123, 255, 0.1); 
+            cursor: pointer;
+        }
+
+       
+        .tablaCasas td:last-child {
+            text-align: center; 
+        }
+
+   
+        .tablaCasas .btn {
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-size: 0.9em; 
+            cursor: pointer; 
+            transition: background-color 0.3s, transform 0.2s ease;
+        }
+
+       
+        .tablaCasas .btn-primary {
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+        }
+
+          
+            .tablaCasas .btn-primary:hover {
+                background-color: #0056b3; 
+                transform: translateY(-2px); 
+            }
+
+        
+        .tablaCasas .btn-danger {
+            background-color: #dc3545; 
+            color: white; 
+            border: none; 
+        }
+
+            
+            .tablaCasas .btn-danger:hover {
+                background-color: #c82333; 
+                transform: translateY(-2px); 
+            }
+</style>

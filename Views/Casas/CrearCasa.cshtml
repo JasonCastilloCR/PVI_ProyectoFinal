@@ -3,51 +3,90 @@
     ViewBag.Title = "Crear Casa";
 }
 
-<h2>Crear o Editar Casa</h2>
+<h2>@(Model.Id == 0 ? "Crear Casa" : "Modificar Casa")</h2>
 
 <form method="post" id="myForm">
     @Html.HiddenFor(_ => _.Id)
 
-    <div>
-        <label class="form-label" for="NombreCasa">Nombre de la Casa:</label>
-        @Html.TextBoxFor(_ => _.NombreCasa, new { placeholder = "Nombre de la casa", @class = "form-control" })
-    </div>
+
+    @if (this.Model != null && this.Model.Id != 0)
+    {
+        <label class="form-label lbldatosCasas" for="NombreCasa">Nombre de la Casa:</label>
+        <p class="datosCasas"> @Html.Raw(Model.NombreCasa);</p>
+    }
+    else
+    {
+        <div>
+            <label class="form-label lbldatosCasas" for="NombreCasa">Nombre de la Casa:</label>
+            @Html.TextBoxFor(_ => _.NombreCasa, new { placeholder = "Nombre de la casa", @class = "form-control" })
+        </div>
+    }
+
+
+    @if (this.Model != null && this.Model.Id != 0)
+    {
+        <label class="form-label lbldatosCasas" for="MetrosCuadrados">Metros Cuadrados:</label>
+        <p class="datosCasas"> @Html.Raw(Model.MetrosCuadrados);</p>
+    }
+    else
+    {
+        <div>
+            <label class="form-label" for="MetrosCuadrados">Metros Cuadrados:</label>
+            @Html.TextBoxFor(_ => _.MetrosCuadrados, new { placeholder = "Área en metros cuadrados", @type = "number", min = "1", @class = "form-control" })
+        </div>
+    }
+
 
     <div>
-        <label class="form-label" for="MetrosCuadrados">Metros Cuadrados:</label>
-        @Html.TextBoxFor(_ => _.MetrosCuadrados, new { placeholder = "Área en metros cuadrados", @type = "number", min = "1", @class = "form-control" })
-    </div>
-
-    <div>
-        <label class="form-label" for="NumeroHabitaciones">Número de Habitaciones:</label>
+        <label class="form-label lbldatosCasas" for="NumeroHabitaciones">Número de Habitaciones:</label>
         @Html.TextBoxFor(_ => _.NumeroHabitaciones, new { placeholder = "Número de habitaciones", @type = "number", min = "1", @class = "form-control" })
     </div>
 
     <div>
-        <label class="form-label" for="NumeroBanos">Número de Baños:</label>
+        <label class="form-label lbldatosCasas" for="NumeroBanos">Número de Baños:</label>
         @Html.TextBoxFor(_ => _.NumeroBanos, new { placeholder = "Número de baños", @type = "number", min = "1", @class = "form-control" })
-    </div>
-
-    <div>
-        <label class="form-label" for="IdPersona">Propietario:</label>
-        @*@Html.DropDownListFor(_ => _.IdPersona, new SelectList(ViewBag.Personas, "IdPersona", "Nombre"), "Seleccionar propietario", new { @class = "form-control" })*@
-    </div>
-
-    <div>
-        <label class="form-label" for="FechaConstruccion">Fecha de Construcción:</label>
-        @Html.TextBoxFor(_ => _.FechaConstruccion, new { @type = "date", @class = "form-control" })
     </div>
 
     @if (this.Model != null && this.Model.Id != 0)
     {
-        <div class="mb-3">
-            @Html.CheckBoxFor(_ => _.Estado, new { @class = "form-check-input" })
-            <label for="Estado" class="form-check-label">Activo</label>
+        <label class="form-label lbldatosCasas" for="IdPersona">Propietario:</label>
+        <p class="datosCasas"> @Html.Raw(Model.IdPersona);</p>
+    }
+    else
+    {
+        <div>
+            <label class="form-label" for="IdPersona">Propietario:</label>
+            @Html.DropDownListFor(_ => _.IdPersona, new SelectList(ViewBag.Personas, "Id_Persona", "Nombre_Completo"), "Seleccionar propietario", new { @class = "form-control" })
         </div>
     }
 
+    @if (this.Model != null && this.Model.Id != 0)
+    {
+        <label class="form-label lbldatosCasas" for="FechaConstruccion">Fecha de Construcción:</label>
+        <p class="datosCasas"> @Html.Raw(Model.FechaConstruccion);</p>
+    }
+    else
+    {
+        <div>
+            <label class="form-label" for="FechaConstruccion">Fecha de Construcción:</label>
+            @Html.TextBoxFor(_ => _.FechaConstruccion, new { @type = "date", @class = "form-control" })
+        </div>
+    }
+
+    @*@if (this.Model != null && this.Model.Id != 0)
+        {
+            <div class="mb-3">
+                @Html.CheckBoxFor(_ => _.Estado, new { @class = "form-check-input" })
+                <label for="Estado" class="form-check-label">Activo</label>
+            </div>
+        }*@
+
     <input type="submit" class="btn btn-primary" value="Guardar" />
+    <a href="@Url.Action("Index", "Casas", new { area = "" })" class="paginas">Regresar</a>
+
 </form>
+
+
 
 @ViewBag.Resultado
 
