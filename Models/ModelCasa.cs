@@ -15,9 +15,15 @@ namespace JCO_ProyectoFinal.Models
         public int MetrosCuadrados { get; set; }
         public int NumeroHabitaciones { get; set; }
         public int NumeroBanos { get; set; }
+
+        public decimal Precio {  get; set; }
         public int IdPersona { get; set; }
+
+        public string Propietario { get; set; }
         public DateTime FechaConstruccion { get; set; }
         public bool Estado { get; set; }  
+
+       
 
     }
 }

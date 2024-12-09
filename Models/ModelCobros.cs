@@ -17,4 +17,5 @@ namespace JCO_ProyectoFinal.Models
         public decimal Monto { get; set; }
         public DateTime? FechaPagada { get; set; }
     }
+
 }

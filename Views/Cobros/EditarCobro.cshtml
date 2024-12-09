@@ -1,0 +1,79 @@
+﻿@model JCO_ProyectoFinal.Models.EditarCobroModel
+
+<div class="container mt-4">
+    <h2>Modificar Cobro</h2>
+
+    <form method="post" action="@Url.Action("EditarCobro", "Cobros")">
+        <div class="form-group">
+            <label class="form-label" for="Propietario">Cliente:</label>
+            <p>@Model.Propietario</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="nombreCasa">Casa:</label>
+            <p>@Model.nombreCasa</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="Periodo">Periodo:</label>
+            <p class="datosCasas">@Model.Periodo</p>
+        </div>
+
+        <div class="mb-3">
+            <h4>Servicios</h4>
+            @foreach (var servicio in Model.EdicionServicios)
+            {
+                <div>
+                    <input type="checkbox"
+                           id="servicio-@servicio.id_servicio"
+                           name="ServiciosSeleccionados"
+                           value="@servicio.id_servicio"
+                           @(servicio.Adquirido == 1 ? "checked" : "") />
+                    <label for="servicio-@servicio.id_servicio">@servicio.nombre_servicio</label>
+                </div>
+            }
+        </div>
+
+        <input type="hidden" name="idCobro" value="@Model.idCobro" />
+        <input type="hidden" name="IdCasa" value="@Model.IdCasa" />
+
+        <button class="btn btn-success" type="submit">Guardar Cambios</button>
+        <button class="btn btn-secondary" type="button" onclick="location.href='@Url.Action("Index", "Cobros")'">Regresar</button>
+    </form>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ClienteId").change(function () {
+                var clienteId = $(this).val();
+
+                if (clienteId) {
+                    $.post("/Cobros/GetCasasByCliente", { clienteId: clienteId }, function (data) {
+                        var casaDropdown = $("#IdCasa");
+                        casaDropdown.empty();
+                        casaDropdown.append('<option value="">Seleccione una casa</option>');
+
+                        if (data && data.length > 0) {
+                            $.each(data, function (index, casa) {
+                                if (casa.Id_casa && casa.Nombre_casa) {
+                                    casaDropdown.append('<option value="' + casa.Id_casa + '">' + casa.Nombre_casa + '</option>');
+                                }
+                            });
+                        } else {
+                            casaDropdown.append('<option value="">No se encontraron casas para este cliente</option>');
+                        }
+                    });
+                } else {
+                    $("#CasaId").empty().append('<option value="">Seleccione una casa</option>');
+                }
+            });
+        });
+    </script>
+}
+

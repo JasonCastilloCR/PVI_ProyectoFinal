@@ -260,12 +260,17 @@
     <Compile Include="Controllers\CobrosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ServiciosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CrearCobroModel.cs" />
+    <Compile Include="Models\DetalleCobroModel.cs" />
+    <Compile Include="Models\EditarCobroModel.cs" />
     <Compile Include="Models\ModelCasa.cs" />
     <Compile Include="Models\ModelCobros.cs" />
     <Compile Include="Models\ModelLogin.cs" />
+    <Compile Include="Models\ModelServicio.cs" />
     <Compile Include="Models\ModelSesion.cs" />
     <Compile Include="Models\PVI_ProyectoFinal1.generated.cs">
       <AutoGen>True</AutoGen>
@@ -356,6 +361,12 @@
     <Content Include="Views\Cobros\Index.cshtml" />
     <Content Include="Views\Cobros\CrearCobro.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Servicios\Index.cshtml" />
+    <Content Include="Views\Servicios\CrearServicio.cshtml" />
+    <Content Include="Views\Cobros\DetalleCobros.cshtml" />
+    <Content Include="Views\Cobros\EditarCobro.cshtml" />
+    <Content Include="Views\Casas\CasaInactiva.cshtml" />
+    <Content Include="Views\Casas\CobrosPendientes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

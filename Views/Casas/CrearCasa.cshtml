@@ -5,14 +5,14 @@
 
 <h2>@(Model.Id == 0 ? "Crear Casa" : "Modificar Casa")</h2>
 
-<form method="post" id="myForm">
+<form method="post" id="formCasas">
     @Html.HiddenFor(_ => _.Id)
 
 
     @if (this.Model != null && this.Model.Id != 0)
     {
         <label class="form-label lbldatosCasas" for="NombreCasa">Nombre de la Casa:</label>
-        <p class="datosCasas"> @Html.Raw(Model.NombreCasa);</p>
+        <p class="datosCasas"> @Html.Raw(Model.NombreCasa)</p>
     }
     else
     {
@@ -26,7 +26,7 @@
     @if (this.Model != null && this.Model.Id != 0)
     {
         <label class="form-label lbldatosCasas" for="MetrosCuadrados">Metros Cuadrados:</label>
-        <p class="datosCasas"> @Html.Raw(Model.MetrosCuadrados);</p>
+        <p class="datosCasas"> @Html.Raw(Model.MetrosCuadrados)</p>
     }
     else
     {
@@ -49,8 +49,8 @@
 
     @if (this.Model != null && this.Model.Id != 0)
     {
-        <label class="form-label lbldatosCasas" for="IdPersona">Propietario:</label>
-        <p class="datosCasas"> @Html.Raw(Model.IdPersona);</p>
+        <label class="form-label lbldatosCasas" for="Propietario">Propietario:</label>
+        <p class="datosCasas"> @Html.Raw(Model.Propietario)</p>
     }
     else
     {
@@ -63,7 +63,7 @@
     @if (this.Model != null && this.Model.Id != 0)
     {
         <label class="form-label lbldatosCasas" for="FechaConstruccion">Fecha de Construcción:</label>
-        <p class="datosCasas"> @Html.Raw(Model.FechaConstruccion);</p>
+        <p class="datosCasas"> @Html.Raw(Model.FechaConstruccion)</p>
     }
     else
     {
@@ -73,15 +73,10 @@
         </div>
     }
 
-    @*@if (this.Model != null && this.Model.Id != 0)
-        {
-            <div class="mb-3">
-                @Html.CheckBoxFor(_ => _.Estado, new { @class = "form-check-input" })
-                <label for="Estado" class="form-check-label">Activo</label>
-            </div>
-        }*@
 
     <input type="submit" class="btn btn-primary" value="Guardar" />
+    <button type="button" id="inactivate-btn" class="btn btn-danger" data-id="@Model.Id">Inactivar</button>
+
     <a href="@Url.Action("Index", "Casas", new { area = "" })" class="paginas">Regresar</a>
 
 </form>
@@ -94,15 +89,99 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/validacionesGenericas.js"></script>
     <script type="text/javascript">
-        $('#myForm').validate({
+        $('#formCasas').validate({
             rules: {
-                'NombreCasa': { required: true },
-                'MetrosCuadrados': { required: true, number: true, min: 1 },
-                'NumeroHabitaciones': { required: true, number: true, min: 1 },
-                'NumeroBanos': { required: true, number: true, min: 1 },
-                'IdPersona': { required: true, number: true, min: 1 },
-                'FechaConstruccion': { required: true, date: true }
+                'NombreCasa': {
+                    required: true,
+                    maxlength: 50
+                },
+                'MetrosCuadrados': {
+                    required: true,
+                    number: true,
+                    min: 0.01
+                },
+                'NumeroHabitaciones': {
+                    required: true,
+                    number: true,
+                    min: 1,
+                    max: 8
+                },
+                'NumeroBanos': {
+                    required: true,
+                    number: true,
+                    min: 1,
+                    max: 4
+                },
+                'IdPersona': {
+                    required: true,
+                    number: true,
+                    min: 1
+                },
+                'FechaConstruccion': {
+                    required: true,
+                    date: true
+                }
+            },
+            messages: {
+                'NombreCasa': {
+                    required: "El nombre de la casa es obligatorio.",
+                    maxlength: "El nombre no puede tener más de 50 caracteres."
+                },
+                'MetrosCuadrados': {
+                    required: "El campo de metros cuadrados es obligatorio.",
+                    number: "Debe ser un número válido.",
+                    min: "Debe ser mayor a 0."
+                },
+                'NumeroHabitaciones': {
+                    required: "El número de habitaciones es obligatorio.",
+                    number: "Debe ser un número válido.",
+                    min: "Debe ser mayor o igual a 1.",
+                    max: "Debe ser menor o igual a 8."
+                },
+                'NumeroBanos': {
+                    required: "El número de baños es obligatorio.",
+                    number: "Debe ser un número válido.",
+                    min: "Debe ser mayor o igual a 1.",
+                    max: "Debe ser menor o igual a 4."
+                },
+                'IdPersona': {
+                    required: "Debe seleccionar un dueño.",
+                    number: "Debe ser un número válido.",
+                    min: "Debe seleccionar un dueño válido."
+                },
+                'FechaConstruccion': {
+                    required: "La fecha de construcción es obligatoria.",
+                    date: "Debe ser una fecha válida."
+                }
             }
         });
     </script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#inactivate-btn').on('click', function () {
+            const idCasa = $(this).data('id');
+            if (confirm(`¿Estás seguro de inactivar la casa con ID: ${idCasa}?`)) {
+                $.ajax({
+                    url: '/Casas/Inactivar',
+                    type: 'POST',
+                    data: { id: idCasa },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            window.location.href = '/Casas/Index';
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Hubo un error al intentar inactivar la casa.');
+                    }
+                });
+            }
+        });
+    });
+</script>
 }

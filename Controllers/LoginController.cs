@@ -18,6 +18,7 @@ namespace JCO_ProyectoFinal.Controllers
             return View();
         }
 
+        // Se cierra o abandona la sesion
         public ActionResult Logout()
         {
             
@@ -28,6 +29,8 @@ namespace JCO_ProyectoFinal.Controllers
             return RedirectToAction("Login", "Login");
         }
 
+        
+        // Se valida el usuario y se obtienen datos como el id usuario, tipo persona y nombre
 
         [HttpPost]
         public ActionResult Login(string email, string clave)

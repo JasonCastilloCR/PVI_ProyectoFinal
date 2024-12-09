@@ -1,0 +1,163 @@
+﻿@model JCO_ProyectoFinal.Models.DetalleCobroModel
+
+@if (Model == null || string.IsNullOrEmpty(Model.Propietario))
+{
+    <div class="alert alert-warning">No se encontraron detalles para el cobro especificado.</div>
+}
+else
+{
+    <div class="container">
+        <h3>Detalle del cobro</h3>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th># Cobro</th>
+                    <td>@Model.IdCobro</td>
+                </tr>
+                <tr>
+                    <th>Propietario</th>
+                    <td>@Model.Propietario</td>
+                </tr>
+                <tr>
+                    <th>Nombre Casa</th>
+                    <td>@Model.NombreCasa</td>
+                </tr>
+                <tr>
+                    <th>Monto Cobro</th>
+                    <td>@Model.Monto.ToString("C")</td>
+                </tr>
+                <tr>
+                    <th>Precio Casa</th>
+                    <td>@Model.PrecioCasa.ToString("C")</td>
+                </tr>
+                <tr>
+                    <th>Periodo</th>
+                    <td>@Model.Periodo</td>
+                </tr>
+                <tr>
+                    <th>Estado</th>
+                    <td>@Model.Estado</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Servicios -->
+    <div class="mb-3">
+        <h4>Servicios</h4>
+        @foreach (var servicio in Model.Servicios)
+        {
+
+
+            <div>
+                <input type="checkbox" id="servicio-@servicio.id_servicio" name="serviciosSeleccionados" value="@servicio.id_servicio"
+                       @(servicio.Adquirido == 1 ? "checked" : "") disabled />
+                <label for="servicio-@servicio.id_servicio">@Html.Encode(servicio.nombre_servicio)</label>
+
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.TipoPersona == "Empleado")
+{
+    <div class="mb-3">
+
+        @if (@Model.Estado == "Pendiente")
+        {
+            <button class="btn btn-primary" onclick="location.href='@Url.Action("EditarCobro", "Cobros", new { idPersona = ViewBag.IdPersona, idCobro = Model.IdCobro })'">Editar</button>
+            <button class="btn btn-success pagar-btn" data-id="@Model.IdCobro">pAGAR</button>
+            <button class="btn btn-danger delete-btn" data-id="@Model.IdCobro">Eliminar</button>
+        }
+    </div>
+}
+<button class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Cobros")'">Regresar</button>
+
+
+
+@if (ViewBag.TipoPersona == "Empleado")
+{
+    <h3>Lista de Acciones Realizadas</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Acción</th>
+                <th>Realizado por</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bitacora in Model.Bitacora)
+            {
+                <tr>
+                    <td>@bitacora.fecha_bitacora.ToString("dd/MM/yyyy")</td>
+                    <td>@bitacora.detalle_bitacora</td>
+                    <td>@bitacora.nombre_usuario</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.delete-btn', function () {
+            const idCobro = $(this).data('id'); 
+            if (confirm(`¿Estás seguro de eliminar el cobro: ${idCobro}?`)) {
+                $.ajax({
+                    url: '/Cobros/EliminarCobro', 
+                    type: 'POST', 
+                    data: { id: idCobro }, 
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message); 
+                            window.location.href = '/Cobros/Index'; 
+                        } else {
+                            alert(response.message); 
+                        }
+                    },
+                    error: function () {
+                        alert('Hubo un error al intentar eliminar el cobro.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.pagar-btn', function () {
+            const idCobro = $(this).data('id'); 
+            if (confirm(`¿Estás seguro de pagar el cobro: ${idCobro}?`)) {
+                $.ajax({
+                    url: '/Cobros/PagarCobro', 
+                    type: 'POST', 
+                    data: { id: idCobro }, 
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message); 
+                            window.location.href = '/Cobros/Index'; 
+                        } else {
+                            alert(response.message); 
+                        }
+                    },
+                    error: function () {
+                        alert('Hubo un error al intentar pagar el cobro.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+

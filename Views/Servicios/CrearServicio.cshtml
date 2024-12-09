@@ -1,0 +1,105 @@
+﻿@model JCO_ProyectoFinal.Models.ModelServicio
+@{
+    ViewBag.Title = "CrearServicio";
+}
+
+
+
+<h2>@(Model.Id == 0 ? "Crear Servicio" : "Modificar Servicio")</h2>
+
+<form method="post" id="myForm">
+    @Html.HiddenFor(_ => _.Id)
+
+
+    @if (this.Model != null && this.Model.Id != 0)
+    {
+        <label class="form-label lbldatosServ" for="NombreServicio">Nombre del Servicio</label>
+        <p class="datosServ"> @Html.Raw(Model.NombreServicio)</p>
+    }
+    else
+    {
+        <div>
+            <label class="form-label lbldatosServ" for="NombreServicio">Nombre del Servicio:</label>
+            @Html.TextBoxFor(_ => _.NombreServicio, new { placeholder = "Servicio", @class = "form-control" })
+        </div>
+    }
+
+    <div>
+        <label class="form-label" for="Descripcion">Descripcion:</label>
+        @Html.TextBoxFor(_ => _.Descripcion, new { placeholder = "Descripcion", @type = "text", @class = "form-control" })
+    </div>
+
+
+
+    <div>
+        <label class="form-label lbldatosServ" for="Precio">Precio:</label>
+        @Html.TextBoxFor(_ => _.Precio, new { placeholder = "Precio", @type = "number", min = "1", @class = "form-control" })
+    </div>
+
+    @if (this.Model != null && this.Model.Id != 0)
+    {
+        <label class="form-label lbldatosServ" for="nombreCategoria">Categoria:</label>
+        <p class="datosServ"> @Html.Raw(Model.nombreCategoria)</p>
+    }
+    else
+    {
+        <div>
+            <label class="form-label" for="IdCategoria">Categoria:</label>
+            @Html.DropDownListFor(_ => _.IdCategoria, new SelectList(ViewBag.Categorias, "Id_categoria", "Nombre"), "Seleccionar Categoria", new { @class = "form-control" })
+        </div>
+    }
+
+
+    <input type="submit" class="btn btn-primary" value="Guardar" />
+    <button type="button" id="inactivate-btn" class="btn btn-danger" data-id="@Model.Id">Inactivar</button>
+
+    <a href="@Url.Action("Index", "Servicios", new { area = "" })" class="paginas">Regresar</a>
+
+</form>
+
+
+
+@ViewBag.Resultado
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/validacionesGenericas.js"></script>
+    <script type="text/javascript">
+        $('#myForm').validate({
+            rules: {
+                'NombreCasa': { required: true },
+                'MetrosCuadrados': { required: true, number: true, min: 1 },
+                'NumeroHabitaciones': { required: true, number: true, min: 1 },
+                'NumeroBanos': { required: true, number: true, min: 1 },
+                'IdPersona': { required: true, number: true, min: 1 },
+                'FechaConstruccion': { required: true, date: true }
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#inactivate-btn').on('click', function () {
+                const idServicio = $(this).data('id');
+                if (confirm(`¿Estás seguro de inactivar el servicio con ID: ${idServicio}?`)) {
+                    $.ajax({
+                        url: '/Servicios/Inactivar',
+                        type: 'POST',
+                        data: { id: idServicio },
+                        success: function (response) {
+                            if (response.success) {
+                                alert(response.message);
+                                window.location.href = '/Servicios/Index';
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function () {
+                            alert('Hubo un error al intentar inactivar el servicio.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

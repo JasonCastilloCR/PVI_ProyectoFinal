@@ -6,7 +6,9 @@
     <title>Sistema de Condominios</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.datatables.net/v/dt/dt-2.1.8/datatables.min.css" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" rel="stylesheet"/>
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-light nav-opciones">
@@ -15,31 +17,34 @@
         <a href="@Url.Action("Index", "Casas")" class="navbar-brand">
             <img class="logo" src="~/img/Logo.png" alt="Condominios" style="height: 40px;" />
         </a>
-       
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1 lista">
-                    <li><a href="@Url.Action("Index", "Cobros", new { area = "" })" class="paginas">Gestionar Cobros</a></li>
 
-                    @if (ViewBag.TipoPersona == "Empleado")
-                    {
-                        <li><a href="@Url.Action("Index", "Casas", new { area = "" })" class="paginas">Gestionar Casas</a></li>
-                    }
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1 lista">
+                <li><a href="@Url.Action("Index", "Cobros", new { area = "" })" class="paginas">Gestionar Cobros</a></li>
 
-                    <li><a href="@Url.Action("Contact", "Home", new { area = "" })" class="paginas">Gestionar Servicios</a></li>
+                @if (ViewBag.TipoPersona == "Empleado")
+                {
+                    <li><a href="@Url.Action("Index", "Casas", new { area = "" })" class="paginas">Gestionar Casas</a></li>
+                }
+   
+                @if (ViewBag.TipoPersona == "Empleado")
+                {
+                    <li><a href="@Url.Action("Index", "Servicios", new { area = "" })" class="paginas">Gestionar Servicios</a></li>
+                }
 
-                    <li>
-                        <p class="usuario"><span class="bienvenida">Bienvenido/a, </span>@Session["UsuarioNombre"]</p>
-                    </li>
+                <li>
+                    <p class="usuario"><span class="bienvenida">Bienvenido/a, </span>@Session["UsuarioNombre"]</p>
+                </li>
 
-                    <li><a href="@Url.Action("Logout", "Login", new { area = "" })" class="paginas"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+                <li><a href="@Url.Action("Logout", "Login", new { area = "" })" class="paginas"><i class="fa-solid fa-right-from-bracket"></i></a></li>
 
-                </ul>
-            </div>
-        
+            </ul>
+        </div>
+
     </nav>
     <div class="container body-content">
         @RenderBody()
@@ -50,49 +55,52 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" integrity="sha256-AlTido85uXPlSyyaZNsjJXeCs07eSv3r43kyCVc8ChI=" crossorigin="anonymous"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
 
+<script src="https://cdn.datatables.net/v/dt/dt-2.1.8/datatables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+
 <style>
 
-   
+
 
     .nav-opciones {
         border: 1px solid black;
-
     }
 
 
 
     img {
-        padding-left: 20px; /* Ajusta el padding a la izquierda */
+        padding-left: 20px; 
         margin: 0 auto;
-        display: block; /* Para asegurarte de que se trata como un bloque */
-        margin-left: 0; /* Para quitar márgenes */
-        height: 40px; /* Ajusta según necesites */
+        display: block; 
+        margin-left: 0; 
+        height: 40px; 
     }
 
     nav ul {
-        display: flex; /* Esto alinea los elementos en una fila horizontal */
-        justify-content:space-evenly; /* Esto pone espaciado entre los elementos */
-        padding: 0; /* Elimina el padding del <ul> */
-        margin: 0; /* Elimina el margen del <ul> */
-        list-style-type: none; /* Elimina los puntos de la lista */
+        display: flex; 
+        justify-content: space-evenly; 
+        padding: 0; 
+        margin: 0; 
+        list-style-type: none; 
     }
 
     nav li {
-        margin-right: 20px; /* Espaciado entre los elementos de la lista */
+        margin-right: 20px; 
     }
 
     nav .paginas {
-        text-decoration: none; /* Quitar el subrayado de los enlaces */
+        text-decoration: none; 
     }
 
 
-    .paginas{
-        justify-content:space-between;
+    .paginas {
+        justify-content: space-between;
         color: black;
         text-decoration: none;
         font-size: 20px;
@@ -113,7 +121,7 @@
 
     .paginas:hover {
         background-color: grey;
-        cursor:pointer;
+        cursor: pointer;
         color: #fff;
     }
 

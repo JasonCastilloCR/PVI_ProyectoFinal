@@ -1,7 +1,147 @@
-﻿
-@{
-    ViewBag.Title = "CrearCobro";
-}
+﻿@model JCO_ProyectoFinal.Models.CrearCobroModel
 
-<h2>CrearCobro</h2>
+<div class="container mt-4">
+    <h2>@(Model.idCobro == 0 ? "Crear Cobro" : "Modificar Cobro")</h2>
+
+    <form method="post" action="@Url.Action("CrearCobro", "Cobros")">
+        <div class="form-group">
+
+            @if (ViewBag.TipoPersona == "Empleado")
+            {
+
+                <label for="ClienteId">Cliente</label>
+                <select id="ClienteId" name="ClienteId" class="form-control">
+                    <option value="">Seleccione un cliente</option>
+                    @foreach (var cliente in Model.Clientes)
+                    {
+                        <option value="@cliente.Value" @(cliente.Value == Model.ClienteId.ToString() ? "selected" : "")>@cliente.Text</option>
+                    }
+                </select>
+
+            }
+            else
+            {
+
+                <label for="ClienteId">Cliente</label>
+                <select id="ClienteId" name="ClienteId" class="form-control" disabled>
+
+
+                    <option value="@Session["UsuarioLogeado"]">@Session["UsuarioNombre"]</option>
+
+                </select>
+                <input type="hidden" name="ClienteId" value="@Session["UsuarioLogeado"]" />
+            }
+        </div>
+
+        <div class="form-group">
+
+
+            <label for="IdCasa">Casa</label>
+            <select id="IdCasa" name="IdCasa" class="form-control">
+                <option value="">Seleccione una casa</option>
+                @foreach (var casa in Model.Casas)
+                {
+                    <option value="@casa.IdCasa">@casa.NombreCasa</option>
+                }
+            </select>
+
+
+
+        </div>
+
+        <div class="form-group">
+
+
+            <label for="Anno">Año</label>
+            <select id="Anno" name="Anno" class="form-control">
+                <option value="">Seleccione un año</option>
+                @foreach (var anio in Model.Anios)
+                {
+                    <option value="@anio.Value" @(anio.Value == Model.Anno.ToString() ? "selected" : "")>@anio.Text</option>
+                }
+            </select>
+
+            <label for="Mes">Mes</label>
+            <select id="Mes" name="Mes" class="form-control">
+                <option value="">Seleccione un mes</option>
+                @foreach (var mes in Model.Meses)
+                {
+                    <option value="@mes.Value" @(mes.Value == Model.Mes.ToString() ? "selected" : "")>@mes.Text</option>
+                }
+            </select>
+
+
+        </div>
+
+
+
+        <div class="mb-3">
+            <h4>Servicios</h4>
+            @foreach (var servicio in Model.ListaServicios)
+            {
+                <div>
+                    <input type="checkbox" id="servicio-@servicio.IdServicio" name="serviciosSeleccionados" value="@servicio.IdServicio" />
+                    <label for="servicio-@servicio.IdServicio">@servicio.NombreServicio</label>
+                </div>
+            }
+        </div>
+
+        <button class="btn btn-success" type="submit">Crear</button>
+        <button class="btn btn-secondary" type="button" onclick="location.href='@Url.Action("Index", "Cobros")'">Regresar</button>
+    </form>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+    $(document).ready(function () {
+        const tipoPersona = "@ViewBag.TipoPersona";
+        const clienteId = $("#ClienteId").val();
+
+        if (tipoPersona !== "Empleado" && clienteId) {
+            cargarCasas(clienteId);
+        }
+
+  
+        $("#ClienteId").change(function () {
+            var clienteId = $(this).val();
+
+            if (clienteId) {
+                cargarCasas(clienteId);
+            } else {
+                $("#IdCasa").empty().append('<option value="">Seleccione una casa</option>');
+            }
+        });
+
+        function cargarCasas(clienteId) {
+            $.post("/Cobros/GetCasasByCliente", { clienteId: clienteId }, function (data) {
+                var casaDropdown = $("#IdCasa");
+                casaDropdown.empty(); 
+                casaDropdown.append('<option value="">Seleccione una casa</option>');
+
+                if (data && data.length > 0) {
+                    $.each(data, function (index, casa) {
+                        if (casa.Id_casa && casa.Nombre_casa) {
+                            casaDropdown.append('<option value="' + casa.Id_casa + '">' + casa.Nombre_casa + '</option>');
+                        }
+                    });
+                } else {
+                    casaDropdown.append('<option value="">No se encontraron casas para este cliente</option>');
+                }
+            }).fail(function () {
+                alert("Ocurrió un error al intentar cargar las casas del cliente.");
+            });
+        }
+    });
+    </script>
+}
 

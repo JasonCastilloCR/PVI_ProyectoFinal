@@ -1,46 +1,46 @@
-﻿
+﻿@model List<DataModels.PviProyectoFinalDBStoredProcedures.SpGestionarServiciosResult>
+@*@model JCO_ProyectoFinal.Models.ModelServicio*@
 @{
     ViewBag.Title = "Index";
 }
 
-
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
+<h2>Gestionar Servicios</h2>
 
 @if (ViewBag.TipoPersona == "Empleado")
 {
     <div class="casasContainer">
-        <h2 class="ttlGestionCasas">Administración de Casas</h2>
+        <h2 class="ttlGestionCasas">Administración de Servicios</h2>
 
-        @Html.ActionLink("Crear Casa", "CrearCasa", "Casas", null, new { @class = "btn btn-success" })
+        @Html.ActionLink("Crear Servicio", "CrearServicio", "Servicios", null, new { @class = "btn btn-success" })
 
-        <table id="table-general" style="width: 100%" class="display">
-            @*class="table table-bordered table-hover tablaCasas"*@
+        <table id="table-general" style="width:100%" class="display">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Nombre de la Casa</th>
-                    <th>Metros Cuadrados</th>
-                    <th>Número de Habitaciones</th>
-                    <th>Número de Baños</th>
-                    <th>Fecha Construccion</th>
-                    <th>Propietario</th>
+                    <th>ID Servicio</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Categoria</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
+                    <th></th>
+
                 </tr>
             </thead>
+            @*@{
+                foreach (var servicio in this.Model)
+                {
+                    <tr>
+                        <td>@servicio.Id_servicio</td>
+                        <td>@servicio.Nombre_servicio</td>
+                        <td>@servicio.Precio</td>
+                        <td>@servicio.Nombre_categoria</td>
+                        <td>@(servicio.Estado_servicio == "Activo" ? "Activo" : "Inactivo")</td>
+
+                        <td>
+                            @Html.ActionLink("Consultar", "CrearServicio", "Servicios", new { id = servicio.Id_servicio }, new { @class = "btn btn-primary" })
+                        </td>
+                    </tr>
+                }
+            }*@
         </table>
     </div>
 }
@@ -49,48 +49,46 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
+            var table = $("#table-general");
+            console.log("Ejecución de scripts de la tabla de casas");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
 
             new DataTable("#table-general", {
                 ajax: {
-                    url: "/Casas/ListaCasas",
+                    url: "/Servicios/ListaServicios",
+                    //dataSrc: function (json) {
+                    //    console.log(json);
+                    //    return json.data;
+
+                    //},
                     dataSrc: 'data'
                 },
 
                 columns: [
-                    { data: 'Id_casa' },
-                    { data: 'Nombre_casa' },
-                    { data: 'Metros_cuadrados' },
-                    { data: 'Numero_habitaciones' },
-                    { data: 'Numero_banos' },
+                    { data: 'Id_servicio' },
+                    { data: 'Nombre_servicio' },
+                    { data: 'Precio' },
+                    { data: 'Nombre_categoria' },
                     {
-                        data: 'Fecha_construccion',
-                        render: function (data) {
-                            const timestamp = parseInt(data.replace(/\/Date\((\d+)\)\//, '$1'));
-                            return moment(timestamp).format('DD/MM/YYYY');
-                        }
-                    },
-                    { data: 'Propietario' },
-                    {
-                        data: 'Estado', render: function (data) {
-                            return data ? "Activo" : "Inactivo"; 
-                        }
+                        data: 'Estado_servicio' 
+                        
                     },
 
                     {
                         data: null,
                         orderable: false,
                         render: function (data, type, row) {
-                            return ` <a href="/Casas/CrearCasa?id=${row.Id_casa}" class="btn btn-primary btn-sm">Modificar</a>`;
+                            return ` <a href="/Servicios/CrearServicio?id=${row.Id_servicio}" class="btn btn-primary btn-sm">Consultar</a>`;
                         }
                     }
 
                 ]
             });
         });
-    </script>
-
-    <script type="text/javascript">
-        $(document)
     </script>
 
 }
